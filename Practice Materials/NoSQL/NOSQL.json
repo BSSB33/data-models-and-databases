@@ -1,0 +1,104 @@
+1 - How many tweets are in the database?
+db.tweets.find().count()
+
+2 - How many tweets are in English?
+db.tweets.find({"lang": "en"}).count()
+
+3 - How many tweets are in English or Hungarian?
+db.tweets.find({ $or: [{"lang":"en"}, {"lang":"hu"}]}).count()
+
+4 - Write out an English tweet!
+db.tweets.findOne({"lang": "en"})
+
+5 - Write out 2 tweets!
+db.tweets.find().limit(2)
+
+6 - Write out 2 English tweets!
+db.tweets.find({"lang": "en"}).limit(2)
+
+7 - Write out the texts of 2 English tweets!
+db.tweets.find({"lang": "en"}, {text: 1}).limit(2)
+
+8 - Write out the texts of 2 English tweets in descending order!
+db.tweets.aggregate([ 
+	{ $match: {lang: "en"} },
+	{ $project: {text: 1} },
+	{ $limit: 2 },
+	{ $sort: {text: -1} },
+	])
+
+9 - How many tweets are there per language?
+db.tweets.aggregate([ 
+	{ $group: {_id:"$lang",	count: { $sum: 1 } } }
+	])
+
+10 - How many tweets are there per language where there is at least 10 tweets per language?
+db.tweets.aggregate([ 
+	{ $group: {_id:"$lang",	count: { $sum: 1 } } },
+	{ $match: {count: {$gt: 10} } }
+])
+
+11 - Which user has how many tweets?
+db.tweets.aggregate(
+	[ 
+		{ $group: 
+			{_id:"$user.name", 
+				count: {$sum: 1} 
+			} 
+		}
+	]
+)
+
+12 - Who has the greatest number of tweets? How many?
+db.tweets.aggregate(
+	[ 
+		{ $group: 
+			{_id:"$user.name", 
+				count: {$sum: 1} 
+			} 
+		},
+		{ $sort: {count: -1}},
+		{ $limit: 1 }
+	]
+)
+
+13 - Write out a tweet that has hashtag!
+db.tweets.findOne(
+	{
+		"entities.hashtags": { $gt: [] }
+	}
+)
+
+14 - For every tweet, write out which user sent it and how many hashtags the tweet has!
+db.tweets.aggregate(
+	[
+		{ $project:
+			{ "user.name": 1, 
+			count_tags: { $size: "$entities.hashtags" } 
+			}
+		},
+		{ $group:
+			{_id: "$user.name",
+			sum: {$sum: "$count_tags"}
+			}
+		}
+	]
+)
+
+15 - Change the location of the users who posted tweets in Hungarian language to “HUN”!
+db.tweets.find({"lang": "en"})
+
+db.tweets.update(
+	{"lang": "hu"}, 
+	{$set: {"user.location": "hu"}},
+	{multi: true}
+)
+
+db.tweets.find({"lang": "hu"})
+
+16 - Delete one tweet of the user “test”!
+db.tweets.find({"user.name": "test"})
+db.tweets.remove(
+	{"user.name": "test"},
+	{justOne: true}
+)

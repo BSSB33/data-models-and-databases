@@ -1,0 +1,84 @@
+Neo4J exercises
+1. What hashtags have been used by jeffgortatowsky?
+match (jeff {twid: "jeffgortatowsky"}) -[:USED]-> (tag)
+return distinct tag.name
+
+2. How many times have jeffgortatowsky tweeted?
+match (jeff {twid: "jeffgortatowsky"}) -[:TWEETED]-> (t)
+return count(t)
+
+3. When did jeffgortatowsky tweeted the first time?
+match (jeff {twid: "jeffgortatowsky"}) -[:TWEETED]-> (t)
+return min(t.date)
+
+4. Which tweets contain the “neo4j” hashtag from the tweets that jeffgortatowsky tweeted?
+match (jeff {twid: "jeffgortatowsky"}) -[:USED]-> (tag)
+<- [:USED]-
+where tag.name = 'neo4j'
+return jeff, t, tag
+
+5. What tags have jeffgortatowsky and starbuxman used together?
+match (jeff {twid: "jeffgortatowsky"}) -[:USED]-> (tag)
+<- [:USED]- (star {twid: "starbuxman"})
+return disticnt tag.name
+
+6.
+	a. Who are the ones who mentioned each other?
+	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)
+		-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
+	return a.twid, b.twid
+
+	b. Write them only once for each pairs!
+	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)
+		-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
+	where a.twid <= b.twid
+	return distinct a.twid, b.twid
+
+	c. Write only those who do not know each other!
+	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)
+		-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
+	where not (a) -[:KNOWS]- (b)
+	return distinct a.twid, b.twid
+
+
+7. Which hashtags have occurred the most times? Which are the top 10?
+MATCH () -[:TAGGED]-> (tag) 
+RETURN tag.name, count(*)
+ORDER BY count(*) DESC
+LIMIT 10
+
+8.
+	a. Write the texts sent by jeff and group the hashtags found in the texts by tweets!
+	MATCH (jeff {twid: "jeffgortatowsky"}) -[:TWEETED] -> (tw)
+		-[:TAGGED]->(tag) 
+	RETURN tw.text, collect(tag.name)
+
+	b. Show only those tweets that contain at least two hashtags!
+	MATCH (jeff {twid: "jeffgortatowsky"}) -[:TWEETED] -> (tw)
+		-[:TAGGED]->(tag)
+	WITH tw, collect(tag.name) as tags
+	WHERE size(tags) >= 2
+	RETURN tw.text, tags
+
+9.
+	a. Which is the shortest path between jeff and star using the KNOWS edges?
+	MATCH p=shortestPath( (jeff {twid: "jeffgortatowsky"})
+	-[:KNOWS*] -> (star {twid: "starbuxman"}) )
+	RETURN p
+
+	b. How many nodes it consists of?
+	MATCH p=shortestPath( (jeff {twid: "jeffgortatowsky"})
+	-[:KNOWS*] -> (star {twid: "starbuxman"}) )
+	RETURN length(nodes(p))
+
+10.
+	a. How many paths of length five or six are there between jeff and star using KNOWS edges?
+	MATCH p=shortestPath( (jeff {twid: "jeffgortatowsky"})
+		-[:KNOWS*5 .. 6] -> (star {twid: "starbuxman"}) )
+	RETURN count(p)
+
+	b. Which one of these contain jeff only as starting node?
+	SKIPPED
+
+
+
