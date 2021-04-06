@@ -1,5 +1,6 @@
 select * from constructors;
 select * from drivers where nationality = 'Hungarian';
+select * from drivers2;
 select * from laps;
 select * from races;
 select * from results;
@@ -23,13 +24,48 @@ CREATE OR REPLACE VIEW POL_POSITION_DRIVERS_ON_HUNGARORING AS
     GROUP BY drivers.forename, drivers.surname, races.name, drivers.nationality, ID, Position
     HAVING (((races.name) = 'Hungarian Grand Prix'));
     
+    
 -- View 3: Query using a set operator!
--- Who drives an italian car or is an italian driver.
+-- Who is an italian driver or drives an italian car
 CREATE OR REPLACE VIEW ITALIAN_DRIVERS AS
     (SELECT DISTINCT results.driverid FROM drivers INNER JOIN results ON results.driverId = drivers.driverId WHERE drivers.nationality = 'Italian')
     UNION
     (SELECT DISTINCT results.driverid FROM constructors INNER JOIN results ON results.constructorId = constructors.constructorId WHERE constructors.nationality = 'Italian');
 
--- PLSQL function 1: Which queries one of your view, using parameter(s) and cursor!
+-- PLSQL function : Which queries one of your view, using parameter(s) and cursor!
 -- Podium Drivers on Hungaroring by nationality.
-    
+CREATE OR REPLACE FUNCTION hungaroring_filter(nationality_param VARCHAR2)
+RETURN NUMBER
+is
+    CURSOR curs1 IS SELECT forename, surname, nationality, id, position FROM POL_POSITION_DRIVERS_ON_HUNGARORING WHERE nationality = nationality_param;
+    rec curs1%ROWTYPE;
+    counter int;
+BEGIN
+    OPEN curs1;
+    LOOP
+        FETCH curs1 INTO rec;
+            EXIT WHEN curs1%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(rec.forename || ', ' || rec.surname || ', -' || rec.nationality || '-, Position: ' || rec.position);
+    END LOOP;
+    counter := curs1%ROWCOUNT;
+    CLOSE curs1;
+    RETURN counter;
+END;
+
+SET SERVEROUTPUT ON 
+select hungaroring_filter('Belgian') from dual;
+select hungaroring_filter('German') from dual;
+
+-- PLSQL Procedure: PLSQL procedure which modifies your database, using parameter(s) and cursor
+-- Generate name code for drivers
+create or replace procedure generate_code is
+    cursor curs1 is select * from drivers where drivers.code is null for update;
+    rec curs1%ROWTYPE;
+BEGIN
+    for rec in curs1 loop
+        update drivers set drivers.code = UPPER(SUBSTR(drivers.surname,1,3)) where current of curs1;
+    end loop;
+END;
+
+call generate_code();
+
