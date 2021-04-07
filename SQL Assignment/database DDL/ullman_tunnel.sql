@@ -32,6 +32,7 @@ CREATE OR REPLACE VIEW ITALIAN_DRIVERS AS
     UNION
     (SELECT DISTINCT results.driverid FROM constructors INNER JOIN results ON results.constructorId = constructors.constructorId WHERE constructors.nationality = 'Italian');
 
+
 -- PLSQL function : Which queries one of your view, using parameter(s) and cursor!
 -- Podium Drivers on Hungaroring by nationality.
 CREATE OR REPLACE FUNCTION hungaroring_filter(nationality_param VARCHAR2)
@@ -56,6 +57,7 @@ SET SERVEROUTPUT ON
 select hungaroring_filter('Belgian') from dual;
 select hungaroring_filter('German') from dual;
 
+
 -- PLSQL Procedure: PLSQL procedure which modifies your database, using parameter(s) and cursor
 -- Generate name code for drivers
 create or replace procedure generate_code is
@@ -69,3 +71,18 @@ END;
 
 call generate_code();
 
+-- 1 Complex trigger: Insert Hungarian Driver
+-- If DRIVERNUMBER is specified, add Driver code upon adding to the DB  
+-- (One Insert method and if is included)
+
+CREATE OR REPLACE TRIGGER NEW_DRIVER_TRIGGER 
+AFTER INSERT OR UPDATE ON DRIVERS2
+BEGIN
+  IF INSERTING THEN
+    DBMS_OUTPUT.PUT_LINE('New Driver is begin added');
+    generate_code();
+  ELSIF UPDATING THEN
+    DBMS_OUTPUT.PUT_LINE('A Driver is begin modified');
+    generate_code();
+  END IF;
+END;
