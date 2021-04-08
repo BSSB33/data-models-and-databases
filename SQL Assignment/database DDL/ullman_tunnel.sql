@@ -75,7 +75,12 @@ select hungaroring_filter('German') from dual;
 -- PLSQL Procedure: PLSQL procedure which modifies your database, using parameter(s) and cursor
 -- Generate name code for drivers
 create or replace procedure generate_code is
-    cursor curs1 is select * from drivers where drivers.code is null for update;
+    cursor curs1 is 
+        select * from drivers 
+            where drivers.code is null 
+            or 
+            drivers.code !=  UPPER(SUBSTR(drivers.surname,1,3))
+    for update;
     rec curs1%ROWTYPE;
 BEGIN
     for rec in curs1 loop
@@ -91,7 +96,7 @@ call generate_code();
 -- (One Insert method and if is included)
 
 CREATE OR REPLACE TRIGGER NEW_DRIVER_TRIGGER 
-AFTER INSERT OR UPDATE ON DRIVERS2
+AFTER INSERT OR UPDATE ON DRIVERS
 BEGIN
   IF INSERTING THEN
     DBMS_OUTPUT.PUT_LINE('New Driver is begin added');
