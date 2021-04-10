@@ -91,18 +91,17 @@ END;
 
 call generate_code();
 
--- 1 Complex trigger: Insert Hungarian Driver
--- If DRIVERNUMBER is specified, add Driver code upon adding to the DB  
--- (One Insert method and if is included)
-
+-- 1 Complex trigger: Log and generate drivercode
 CREATE OR REPLACE TRIGGER NEW_DRIVER_TRIGGER 
 AFTER INSERT OR UPDATE ON DRIVERS
 BEGIN
   IF INSERTING THEN
     DBMS_OUTPUT.PUT_LINE('New Driver is begin added');
+    INSERT INTO DRIVERS_LOG (log_date, action) VALUES (SYSDATE, 'INSERT');
     generate_code();
   ELSIF UPDATING THEN
     DBMS_OUTPUT.PUT_LINE('A Driver is begin modified');
+    INSERT INTO DRIVERS_LOG (log_date, action) VALUES (SYSDATE, 'UPDATE');
     generate_code();
   END IF;
 END;
