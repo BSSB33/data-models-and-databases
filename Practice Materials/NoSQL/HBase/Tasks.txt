@@ -1,0 +1,88 @@
+Command line -> hbase shell
+
+Exercises
+1. 
+status
+stauts 'simple'
+stauts 'summary'
+stauts 'detailed'
+
+2. 
+table_help
+
+3. 
+create 'data_models', 'homeworks'
+
+4.
+list
+
+5.
+describe 'data_models'
+
+6.
+disable 'data_models'
+enable 'data_models'
+
+7.
+is_enabled 'data_models'
+
+8. 
+show filters
+
+9.
+drop 'data_models'
+
+10. 
+alter 'data_models', NAME=>'seats', VERSIONS=>2
+
+11.
+alter 'data_models' delete=>'seats'
+describe 'data_models'
+
+12.
+put 'data_models', '04.07', 'students:current', 19
+put 'data_models', '04.07', 'students:current', 20
+put 'data_models', '04.07', 'students:current', 21
+put 'data_models', '04.09', 'students:current', 21
+put 'data_models', '04.13', 'students:current', 22, 16177900000
+put 'data_models', '04.07', 'students:max', 27
+
+13.
+count 'data_models'
+
+14. 
+scan 'data_models'
+
+15.
+scan 'data_models' COLUMNS=>'students'
+scan 'data_models' COLUMNS=>'students:'
+
+16.
+scan 'data_models' RAW=>true
+scan 'data_models', VERSION=>2
+scan 'data_models', VERSION=>3, RAW=true
+
+17.
+get 'data_models', '04.07'
+get 'data_models', '04.07', COLUMN=>'students'
+get 'data_models', '04.07', COLUMN=>'students:max'
+get 'data_models', '04.07', COLUMN=>'students:current'
+get 'data_models', '04.07', COLUMN=>'students:current', TIMERANGE=>[0, 17200000000000]
+get 'data_models', '04.07', COLUMN=>'students:current', TIMERANGE=>[0, 17200000000000], RAW=>true, VERSION=>2
+get 'data_models', '04.07', COLUMN=>'students:current', TIMERANGE=>[1617790, 1617790000000000000], RAW=>true, VERSION=>2
+
+18.
+delete 'data_models', '04.07', 'students:current'
+scan 'data_models' -> now we have different versions
+
+19.
+scan 'data_models', VERSION=>10
+
+20.
+get 'data_models', '04.07', COLUMN=>'students:current'
+put 'data_models', '04.13', 'students:current', 25
+---> Now its 25
+get 'data_models', '04.07', COLUMN=>'students:current'
+delete 'data_models', '04.13', 'students:current'
+---> Now its 22 again (older version)
+get 'data_models', '04.07', COLUMN=>'students:current'

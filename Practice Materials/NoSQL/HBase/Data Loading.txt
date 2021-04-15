@@ -1,0 +1,8 @@
+create 'sale, 'bar', 'beer', 'drinker'
+describe 'sale'
+
+exit
+
+hbase org.apache.adoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator=',' -Dimporttsv.columns=HBASE_ROW_KEY, bar:id, beer:id, beer:name, beer:manufacturer_name, drinker:drinker_id, drinker:phone, Drinker:email, drinker:name
+
+scan 'data_models', {FILTER => "ValueFilter (=, 'binaryprefix:22')"}
