@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "resultid": 432,
+      "raceid": 38,
+      "driverid": 24,
+      "racenumber": 18,
+      "grid": 18,
+      "positiontext": "R",
+      "points": 0,
+      "laps": 26,
+      "time": "",
+      "fastestlap": 23,
+      "rank": 13,
+      "fastestlapspeed": 203.537
+    },
+    {
+      "resultid": 435,
+      "raceid": 39,
+      "driverid": 13,
+      "racenumber": 5,
+      "grid": 1,
+      "positiontext": "1",
+      "points": 10,
+      "laps": 65,
+      "time": "31:36.2",
+      "fastestlap": 14,
+      "rank": 1,
+      "fastestlapspeed": 202.685
+    }
+  ]
+}

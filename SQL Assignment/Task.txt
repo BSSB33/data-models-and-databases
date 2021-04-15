@@ -1,0 +1,67 @@
+THIS DOCUMENT CAN BE FOUND FORMATTED IN THE DOCUMENTATION.PDF WITH SOLUTIONS
+
+1.             Oracle project: Overall process
+
+Please go through the following points when you solve the project! Please use these bullets when you prepare your documentation!
+
+    Choose test data
+        Minimum 5 tables
+        About 0.1-0.2 million records in two tables to have bigger dataset
+    Plan your schema objects and create them
+        Create a data model (SQL developer data modeler project can be used)
+        Create your own schema objects
+        Include sequence and trigger objects
+    Load the data into the schema objects!
+
+Document all your steps in your word document!
+2.             Possible tools to use for test data documentation and generation
+2.1.         SQL Developer data modeler
+
+To create a data model you can use this tool
+2.2.         Possibilities to load data into oracle
+
+    Simple SQL commands, scripts run by SQL Plus or any other SQL client
+    Comma separated values as external table and insert – select statement.
+    Export – import from another oracle database
+    Export – import data pump
+    SQL Loader to load in plain text files
+    SQL Developer
+
+Tip: Remove indexes, triggers from the table before data load and recreate them after.
+2.3.          Data model, E/R diagram designing:
+
+    https://www.lucidchart.com/ (Links to an external site.)
+    https://www.smartdraw.com/ (Links to an external site.)
+    https://www.edrawsoft.com/create-er-diagram.php (Links to an external site.)
+    https://www.draw.io/ (Links to an external site.)
+
+2.4.          Finding data sets:
+
+    https://www.kaggle.com/datasets (Links to an external site.)
+    https://ec.europa.eu/eurostat/data/database (Links to an external site.)
+
+2.5.          Data generation:
+
+    https://www.rankred.com/test-data-generation-tools/
+
+3.             Add to your database
+
+    View 1: Join at least three tables and add in a where clause!
+    View 2: Join at least two tables and a subquery and use somewhere a grouping with having!
+    View 3: Query using a set operator!
+    1 stored PLSQL function which queries one of your view, using parameter(s) and cursor!
+    1 stored PLSQL procedure which modifies your database, using parameter(s) and cursor!
+    1 complex trigger
+    Include at least one insert command and at least one delete or update command with subquery in your PLSQL procedure and trigger!
+    Use at least one loop and one if statement in the function, procedure and trigger!
+    Grant me (lkpeter) the necessary privileges to use your database objects!
+    Demonstrate how your objects work with screenshots!
+
+ 
+4.            Final output of your homework in a document:
+
+    Write down the process how you generated or created the database objects! ~20%
+    How you did you get and loaded the data into them! ~20%
+    Data model image and the relational data model, explain them! ~20%
+    Explain your database objects (tables, sequences, triggers, function, etc)! ~40%
+    You have to include SQLs, shell scripts for schema creation and data load

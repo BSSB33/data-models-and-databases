@@ -1,0 +1,23 @@
+Select 2 out of 4: MongoDB, Neo4j, Redis and HBase
+
+1.             NoSQL project
+
+Store the data stored in the Oracle database or a properly specified part of it (at least the data of two tables) in two of the learned NoSQL databases. Write 3-3 complex queries on the stored data for the two NoSQL DBMSs! Describe the differences, benefits, and drawbacks between the three database management systems (Oracle and the two selected NoSQL) through specific examples.
+
+The documentation must include:
+
+    the technologies for using the selected database management systems and its description
+    the process of loading data
+    the formulation, code, and result of the 3-3 queries
+    analysis of the differences, benefits, and disadvantages between the three database management systems (Oracle and selected two NoSQL)
+
+2.             Upload
+
+Students must upload 1 document! The codes must be included at the end of the document.
+2.1.          Structure of the uploaded document:
+
+    Choice of NoSQL databases. Why did you choose these databases? ~10%
+    How did you import the data? With command line examples, or screenshots. ~20%
+    NoSQL queries with results, screenshots. ~60%
+    Comparison of the used DBMSs. ~10%
+    Appendix: Include all scripts and codes you used to load and query the data.
