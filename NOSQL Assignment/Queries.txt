@@ -1,0 +1,29 @@
+#How many results are there per driver for each racetrack?
+db.results.aggregate([
+    { 
+        $group: {
+            _id: {"drivername": "$driver.surname", "racename":"$race.name"}, 
+            count: { $sum: 1 } }
+        }
+])
+
+# What were the results of the most recent 30, F1 races on the German Grand Prix?
+db.results.aggregate([ 
+	{ $match: {"race.name": "German Grand Prix"} },
+	{ $limit: 30 },
+	{ $sort: {"race.year": -1} },
+])
+
+# Which driver has the most number of races? How Many?
+db.results.aggregate(
+	[ 
+                { $match: {"positiontext" : "1"}},
+		{ $group: 
+			{_id:"$driver.surname", 
+                            count: {$sum: 1} 
+                        } 
+		},
+		{ $sort: {count: -1}},
+		{ $limit: 1 }
+	]
+)
