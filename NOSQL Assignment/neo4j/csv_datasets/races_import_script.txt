@@ -1,0 +1,5 @@
+LOAD CSV WITH HEADERS FROM 'file:///races.csv' AS row
+WITH toInteger(row.RACEID) as raceId, toInteger(row.YEAR) as year, row.ROUND as round, row.NAME as name, row.DATEOFRACE as date
+MERGE (ra:Races {raceId: raceId})
+  SET ra.year = year, ra.round = round, ra.name = name, ra.date = date
+  RETURN count(ra);

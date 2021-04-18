@@ -1,0 +1,5 @@
+LOAD CSV WITH HEADERS FROM 'file:///drivers.csv' AS row
+WITH toInteger(row.DRIVERID) as driverId, row.DRIVERREF as driverRef, row.DRIVERNUMBER as driverNumber, row.FORENAME as foreName, row.SURNAME as surName, row.DOB as dob, row.NATIONALITY as nationality
+MERGE (d:Drivers {driverId: driverId})
+  SET d.dob = dob, d.driverNumber = driverNumber, d.driverRef = driverRef, d.foreName = foreName, d. surName = surName, d.nationality = nationality
+  RETURN count(d);

@@ -1,0 +1,6 @@
+MATCH
+  (d:Drivers),
+  (r:Result)
+WHERE d.driverId = r.driverId
+CREATE (d)-[relation:DROVE]->(r)
+RETURN type(relation), relation.name

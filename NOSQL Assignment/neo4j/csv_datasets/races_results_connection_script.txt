@@ -1,0 +1,6 @@
+MATCH
+  (ra:Races),
+  (res:Result)
+WHERE ra.raceId = res.raceId
+CREATE (res)-[relation:BELONGS]->(ra)
+RETURN type(relation), relation.name

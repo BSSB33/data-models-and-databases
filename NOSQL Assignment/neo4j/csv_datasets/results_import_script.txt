@@ -1,0 +1,5 @@
+LOAD CSV WITH HEADERS FROM 'file:///results.csv' AS row
+WITH toInteger(row.DRIVERID) as driverId, toInteger(row.RESULTID) as resultId, toInteger(row.RACEID) as raceId, row.POINTS as points, toInteger(row.LAPS) as laps, row.TIME as time, row.FASTESTLAP as fastestLap, row.FASTESTLAPSPEED as fastestLapSpeed
+MERGE (r:Result {resultId: resultId})
+  SET r.driverId = driverId, r.raceId = raceId, r.points = points, r.laps = laps, r.time = time, r.fastestLap = fastestLap, r. fastestLapSpeed = fastestLapSpeed
+  RETURN count(r);
