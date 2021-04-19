@@ -24,19 +24,16 @@ return disticnt tag.name
 
 6.
 	a. Who are the ones who mentioned each other?
-	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)
-		-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
+	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
 	return a.twid, b.twid
 
 	b. Write them only once for each pairs!
-	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)
-		-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
+	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
 	where a.twid <= b.twid
 	return distinct a.twid, b.twid
 
 	c. Write only those who do not know each other!
-	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)
-		-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
+	match (a:User) - [:TWEETED] -> (c) -[:MENTIONS]-> (b:User)-[:TWEETED]->(d) -[:MENTIONS]-> (a:User)
 	where not (a) -[:KNOWS]- (b)
 	return distinct a.twid, b.twid
 

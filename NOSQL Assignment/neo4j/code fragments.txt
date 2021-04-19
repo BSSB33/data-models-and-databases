@@ -1,0 +1,15 @@
+Query 1
+MATCH p=(d:Drivers)-[dr:DROVE]-(re:Result)-[be:BELONGS]-(ra:Races)
+RETURN p LIMIT 250;
+
+Query 2
+MATCH p=(driver {surName:"Hamilton", foreName:"Lewis"}) -[:DROVE]-> (result)-[:BELONGS]-(race)
+RETURN race.name,  count(*)
+ORDER BY count(*) DESC
+LIMIT 100
+
+Query 3
+MATCH p=(race {name: "Turkish Grand Prix"}) <- [b:BELONGS]-(result) <- [d:DROVE] - (drivers)
+WITH drivers, count(d) as rel_count
+WHERE rel_count > 1
+RETURN drivers.surName, rel_count

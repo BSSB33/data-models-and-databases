@@ -1,2 +1,2 @@
 The rar file called neo4j.rar is the compressed database used for this assignment. In order to used it, copy it inside the data/databases folder.
-Since this is the default database, it is enough to ooverwrite the originally generated empty database.
+Since this is the default database, it is enough to overwrite the originally generated empty database.
