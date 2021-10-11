@@ -1,0 +1,79 @@
+## Elasticsearch
+
+# Compound Queries
+# Boolean Query
+# Write a query to search for addresses that have either a lane or a street in the name oand have a balance between 20000 and 30000.
+
+GET /bank=_search
+{
+    "query": {
+        "bool":{
+            "must":{
+                "match":{
+                    "address": "lane street"
+                }
+            },
+            "filter": {
+                "range": {
+                    "balance": {
+                        "gte": "20000",
+                        "lte": "30000"
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Boosting Query
+# Write a query to search for adresses that include "church" and "lane" but priorities church over lane.
+
+GET /bank/_search
+{
+    "query": {
+        "boosting": {
+            "positive": {
+                "term": {
+                    "address": "church"
+                }
+            },
+            "negative": {
+                "term": {
+                    "adress": "lane"
+                }
+            },
+            "negative_boost": 0.5
+        }
+    }
+}
+
+# Constant Score Query
+# Write a query to search for adresses that include "church" and "lane". Make sure they have the same relevance.
+
+GET /bank/_search
+{
+    "query": {
+        "constant_score": {
+            "filter": {
+                "term": {
+                    "address": "church"
+                }
+            },
+            "boost": 1.00
+        }
+    }
+}
+
+GET /bank/_search
+{
+    "query": {
+        "constant_score": {
+            "filter": {
+                "term": {
+                    "address": "lane"
+                }
+            },
+            "boost": 1.00
+        }
+    }
+}
